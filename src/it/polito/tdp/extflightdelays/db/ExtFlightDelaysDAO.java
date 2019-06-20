@@ -11,6 +11,7 @@ import java.util.List;
 import it.polito.tdp.extflightdelays.model.Airline;
 import it.polito.tdp.extflightdelays.model.Airport;
 import it.polito.tdp.extflightdelays.model.Flight;
+import it.polito.tdp.extflightdelays.model.Link;
 
 public class ExtFlightDelaysDAO {
 
@@ -91,4 +92,31 @@ public class ExtFlightDelaysDAO {
 			throw new RuntimeException("Error Connection Database");
 		}
 	}
+
+	public List<Link> loadAllLinks(int distance) {
+		String sql = "SELECT DISTINCT ORIGIN_AIRPORT_ID, DESTINATION_AIRPORT_ID, DISTANCE FROM flights WHERE DISTANCE>=?";
+		List<Link> result = new LinkedList<Link>();
+
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, distance);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				Link link = new Link(rs.getInt("ORIGIN_AIRPORT_ID"), rs.getInt("DESTINATION_AIRPORT_ID"),
+						rs.getInt("DISTANCE"));
+				result.add(link);
+			}
+
+			conn.close();
+			return result;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Errore connessione al database");
+			throw new RuntimeException("Error Connection Database");
+		}
+	}
+
 }

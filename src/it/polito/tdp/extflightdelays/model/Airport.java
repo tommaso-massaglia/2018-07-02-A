@@ -1,7 +1,9 @@
 package it.polito.tdp.extflightdelays.model;
 
+import com.javadocmd.simplelatlng.LatLng;
+
 public class Airport {
-	
+
 	private int id;
 	private String iataCode;
 	private String airportName;
@@ -11,7 +13,8 @@ public class Airport {
 	private Double latitude;
 	private Double longitude;
 	private Double timezoneOffset;
-	
+	private LatLng coords;
+
 	public Airport(int id, String iataCode, String airportName, String city, String state, String country,
 			Double latitude, Double longitude, Double timezoneOffset) {
 		this.id = id;
@@ -23,6 +26,11 @@ public class Airport {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.timezoneOffset = timezoneOffset;
+		this.coords = new LatLng(latitude, longitude);
+	}
+
+	public LatLng getCoords() {
+		return coords;
 	}
 
 	public int getId() {
@@ -123,5 +131,5 @@ public class Airport {
 	public String toString() {
 		return "Airport [id=" + id + ", iataCode=" + iataCode + ", airportName=" + airportName + "]";
 	}
-	
+
 }
